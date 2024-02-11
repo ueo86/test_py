@@ -1,0 +1,36 @@
+version: '3.5'
+services:
+  backend:
+    build:
+      context: backend
+      # target: builder
+    hostname: backend
+    restart: always
+    environment:
+      - PORT=8000
+    ports:
+      - 8000-8005:8000
+    volumes:
+      - ./backend:/app
+      - be_data:/home/cuser/.vscode-server
+    networks:
+      - mynetwork
+
+  proxy:
+    build: 
+      context: proxy
+    hostname: proxy
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+    external: true
+
+volumes:
+  be_data:
+    name: be_data
